@@ -1,0 +1,401 @@
+:root {
+    --bg-prime: #050505;
+    --bg-sec: #0f0f13;
+    --accent-purple: #7B2CBF;
+    --accent-gold: #FFB703;
+    --text-pure: #ffffff;
+    --text-muted: #a0a0b0;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-prime);
+    color: var(--text-pure);
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ambient Effects */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 99;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.ambient-glow {
+    position: fixed;
+    width: 60vw;
+    height: 60vh;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+    opacity: 0.15;
+    animation: drift 20s infinite alternate;
+}
+
+.glow-1 {
+    top: -20%;
+    left: -10%;
+    background: radial-gradient(circle, var(--accent-purple), transparent 70%);
+}
+
+.glow-2 {
+    bottom: -20%;
+    right: -10%;
+    background: radial-gradient(circle, var(--accent-gold), transparent 70%);
+    animation-delay: -10s;
+}
+
+@keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(5%, 10%) scale(1.1); }
+}
+
+/* Header */
+.hero {
+    padding: 2rem 4rem;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.hero-content {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badge {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    background: linear-gradient(90deg, rgba(123,44,191,0.2), rgba(255,183,3,0.2));
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(to right, #fff, #a0a0b0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+/* Carousel */
+.gallery-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 0 4rem;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 3rem;
+    width: 100%;
+    height: 70vh;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    align-items: center;
+    padding: 0 10vw;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.slide-card {
+    flex: 0 0 calc(100vw - 30vw);
+    max-width: 1000px;
+    height: 60vh;
+    scroll-snap-align: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+    opacity: 0.5;
+    transform: scale(0.9);
+}
+
+.slide-card.active {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+/* Visuais da Obra */
+.card-visual {
+    position: relative;
+    height: 100%;
+    background: #111;
+}
+
+.card-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    transition: opacity 0.5s ease;
+}
+
+.slide-card:hover .card-visual img {
+    opacity: 1;
+}
+
+.visual-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, var(--bg-sec));
+}
+
+.category-tag {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Conteúdo da Obra */
+.card-content {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(to right, rgba(15,15,19,0.9), rgba(15,15,19,0.95));
+}
+
+.artist-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    color: var(--text-pure);
+}
+
+.collection-title {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.artworks-list {
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    color: #dedede;
+}
+
+.artworks-list ul {
+    list-style: none;
+}
+
+.artworks-list li {
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.artworks-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+}
+
+.pricing-block {
+    margin-top: auto;
+    padding: 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.price-label {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.price-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.price-breakdown {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+.obs-block {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.obs-block strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Nav Buttons */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.nav-btn:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: 4rem; }
+.next-btn { right: 4rem; }
+
+/* Status / Progress */
+.controls-overlay {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+}
+
+.progress-indicator {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Reponsivo simples */
+@media (max-width: 1024px) {
+    .slide-card {
+        grid-template-columns: 1fr;
+        flex: 0 0 80vw;
+        height: 70vh;
+        overflow-y: auto;
+    }
+    .card-visual { height: 30vh; }
+    .card-content { padding: 2rem; }
+}
+
+/* CTA Button Styles */
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--accent-purple), #9d4edd);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 12px;
+    letter-spacing: 0.1em;
+    box-shadow: 0 10px 20px rgba(123, 44, 191, 0.3);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(123, 44, 191, 0.5);
+    background: linear-gradient(135deg, #9d4edd, var(--accent-purple));
+}
+
+.cta-button:active {
+    transform: translateY(1px);
+}
